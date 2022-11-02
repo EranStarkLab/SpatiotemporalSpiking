@@ -2,6 +2,9 @@ import sys
 import os
 
 class HiddenPrints:
+    """
+    This class allows hiding prints outputted by other classes
+    """
     def __enter__(self):
         self._original_stdout = sys.stdout
         sys.stdout = open(os.devnull, 'w')

@@ -15,6 +15,9 @@ mpl.rcParams['ps.fonttype'] = 42
 NUM_FETS = 34
 
 def change_length(x, y, length):
+    """
+    Update length of two input arrays so that x has no repeating values (exception for the last value)
+    """
     valid = []
     for i in range(len(x)):
         if i == len(x) - 1:
@@ -34,6 +37,9 @@ def change_length(x, y, length):
 
 
 def str2lst(s):
+    """
+    Converts a string representing a list to a list
+    """
     ret = []
     for val in list(s[1:-1].split(" ")):  # remove [] and split
         if len(val) == 0:
@@ -45,6 +51,10 @@ def str2lst(s):
 
 
 def plot_roc_curve(df, name=None, chunk_size=(200, ), modalities=None, use_alt=False):
+    """
+    Creates ROC curve plot based on the modalities and chunk size given as input. Multiple chunk sizes can be viewed
+    together
+    """
     if modalities is None:
         modalities = ['spatial', 'spike-timing', 'waveform']
     mean_fprs = None
@@ -94,6 +104,9 @@ def plot_roc_curve(df, name=None, chunk_size=(200, ), modalities=None, use_alt=F
 
 
 def plot_cf_thr(preds: np.ndarray, thr, labels, c_ax):
+    """
+    Plots a confusion matrix based on threshold thr
+    """
     preds_thr = preds >= thr
     confs_thr = [confusion_matrix(labels, pred) for pred in preds_thr]
     conf_thr = np.roll(np.roll(np.median(confs_thr, axis=0), 1, axis=0), 1, axis=1)
@@ -114,15 +127,24 @@ def plot_cf_thr(preds: np.ndarray, thr, labels, c_ax):
     return c_ax
 
 
-def get_labels(lst):
-    ret = []
-    for element in lst:
-        if element not in ret:
-            ret.append(element)
-    return ret
-
-
 def plot_fet_imp(df, sems, base, name=None, chunk_size=0, modalities=None, semsn=None, fet_names_map=None):
+    """
+    Creates a plot of feature importance
+    Parameters
+    ----------
+    df : Medians to plot
+    sems : information for (positive if semsn is not None) error bars
+    base : Baseline information
+    name : Name used for saving the plot
+    chunk_size : Chunk size to plot
+    modalities : Modalities to plot, both name and feature indices are required
+    semsn : information for negative error bars
+    fet_names_map : Feature names to add to plot
+
+    Returns
+    -------
+    None. Plot is saved
+    """
     if modalities is None:
         modalities = [('spatial', SPATIAL), ('spike-timing', SPIKE_TIMING), ('waveform', WAVEFORM)]
 
@@ -199,6 +221,9 @@ def plot_fet_imp(df, sems, base, name=None, chunk_size=0, modalities=None, semsn
 
 
 def plot_auc_chunks_bp(df, name=None, plot=True, ax_inp=None, edge_color='k', shift=0, mods=None):
+    """
+    Plots box plot for the AUC for each chunk size for a single modality
+    """
     chunk_sizes = np.roll(df.chunk_size.unique(), -1)[::-1]
     if mods is None:
         mods = df.modality.unique()
@@ -214,9 +239,6 @@ def plot_auc_chunks_bp(df, name=None, plot=True, ax_inp=None, edge_color='k', sh
             ax = ax_inp
 
         ax.axhline(y=np.median(df_m.auc[chunk_sizes_m == 0].to_numpy()), color='k', linestyle='--')
-        # Since highlighting is a bit to much
-        # ax.axhspan(ymin=np.quantile(df_m.auc[chunk_sizes_m == 0].to_numpy(), 0.25),
-        #            ymax=np.quantile(df_m.auc[chunk_sizes_m == 0].to_numpy(), 0.75), color='k', alpha=0.2)
         bp = ax.boxplot(chunk_aucs, labels=chunk_sizes.astype(np.int32),
                         positions=2.5 * np.arange(len(chunk_sizes)) + shift,
                         flierprops=dict(markeredgecolor=edge_color, marker='+'), notch=True, bootstrap=1_000)
@@ -246,6 +268,9 @@ def plot_auc_chunks_bp(df, name=None, plot=True, ax_inp=None, edge_color='k', sh
 
 
 def plot_test_vs_test2_bp(df, chunk_sizes=(0, 0, 0), name=None, diff=False, df2=None):
+    """
+    Plots a comparative box plot for the CA1-trained and neocortical-trained models for both test sets
+    """
     labels = ['waveform', 'spike-timing', 'spatial']
     figsize = (13, 7.5) if not diff else (6, 7.5)
     fig, ax = plt.subplots(figsize=figsize)
@@ -277,7 +302,7 @@ def plot_test_vs_test2_bp(df, chunk_sizes=(0, 0, 0), name=None, diff=False, df2=
             if df2 is not None:
                 positions = [x[i] + width * 0.63]
                 diff_vals = 100 * (test2_val2 - val2) / test2_val2
-                ax.boxplot(diff_vals, positions=positions, boxprops={"facecolor": "b"},
+                ax.boxplot(diff_vals, positions=positions, boxprops={"facecolor": "r"},
                            flierprops=dict(markerfacecolor='#808080', marker='+'), medianprops={"color": "k"},
                            patch_artist=True, widths=width, notch=True, bootstrap=1_000)
         else:
@@ -290,22 +315,28 @@ def plot_test_vs_test2_bp(df, chunk_sizes=(0, 0, 0), name=None, diff=False, df2=
                        flierprops=dict(markerfacecolor='#808080', marker='+'), medianprops={"color": "k"},
                        patch_artist=True, widths=width, notch=True, bootstrap=1_000)
             if df2 is not None:
-                ax.boxplot(test2_val2, positions=[x[i] + len(x) + 0.3 - width * 0.63], boxprops={"facecolor": "b"},
+                ax.boxplot(test2_val2, positions=[x[i] + len(x) + 0.3 - width * 0.63], boxprops={"facecolor": "r"},
                            flierprops=dict(markerfacecolor='#808080', marker='+'), medianprops={"color": "k"},
                            patch_artist=True, widths=width, notch=True, bootstrap=1_000)
-                ax.boxplot(val2, positions=[x[i] + len(x) + 0.3 + width * 0.63], boxprops={"facecolor": "b"},
+                ax.boxplot(val2, positions=[x[i] + len(x) + 0.3 + width * 0.63], boxprops={"facecolor": "r"},
                            flierprops=dict(markerfacecolor='#808080', marker='+'), medianprops={"color": "k"},
                            patch_artist=True, widths=width, notch=True, bootstrap=1_000)
 
     if diff:
         ticks = x
+        ax.set_xticks(ticks)
+        ax.set_xticklabels(labels)
     else:
         ticks = []
+        tick_labels = []
         for t in x:
             ticks += [t - width * 0.63, t + width * 0.63]
+            tick_labels += ['nCX', 'CA1']
         for t in x:
             ticks += [t + len(x) + 0.3 - width * 0.63, t + len(x) + 0.3 + width * 0.63]
-    ax.set_xticks(ticks)
+            tick_labels += ['nCX', 'CA1']
+        ax.set_xticks(ticks)
+        ax.set_xticklabels(tick_labels)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
 

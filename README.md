@@ -15,7 +15,7 @@ required to install the package developed in Timme and Lapish, 2018 (eNeuro).
 The code should be executed from the _src_ directory and the input to all code segments should be provided by changing
 only the _constants.py_ and _paths.py_ files.
 
-The code files can be grouped into __5__ modules:
+The code files, all found under the _src/_ directory, can be grouped into __5__ modules:
 ### 1. Raw data parsing
 The module is executed by running _read_data.py_.  
 The module is used to read the raw data, and extract only the relevant spikes and assign labels to them (see _Spike 
@@ -88,13 +88,13 @@ customizability available, see _constants.py_):
   * ML_INPUT_PATH - Path to the post-processed data.
 
 ### 4. Statistics
-The module is executed by running the individual notebooks inside the _src/statistics/_ directory.  
+The module is executed by running the individual notebooks inside the _statistics_analysis/_ directory.  
 The module is used to perform statistical analysis, mainly based on the outputs of __Module 3__. Note that not all tests
 are performed in the notebooks. Some statistics are performed in the next module (specifically statistics related to 
 __Figure 3C__, __Figure 4__, and __Table 4__). In addition, some statistical tests are performed in MATLAB (specifically 
 Kruskal-Wallis tests, correlation significance and mutual information calculation). Note that some results files used
 for the analysis were modified to have the importance values of the original features, feature families and spatial
-event groups. Code for the manipulation is provided and explained in _src/statistics/combine_res.py_ . Utility functions
+event groups. Code for the manipulation is provided and explained in _statistics_analysis/combine_res.py_ . Utility functions
 for this module are under _statistics_. For this module, be sure to update the following (inputs for previous modules
 should not be changed):
 
@@ -143,7 +143,7 @@ CA1).
 after feature extraction is also provided under _data_files/postprocess_data/_. The directory includes two 
 sub-directories: _cluster_data/_ containing the features of all three modalities and _cluster_data_wf_trans/_ which
 contains only waveform-based features extracted from the transformed spikes. Note that _cluster_data/_ does not contain
-chunk statistics. To extract chunk statistics you may utilize _src/preprocessing_pipeline.py_.
+chunk statistics. To extract chunk statistics you may utilize _preprocessing_pipeline.py_.
 * Since execution times can be prolonged (see _Replicating results_ below), results files are provided under 
 _data_files/results/_ and can be used for Modules 4 and 5. See _paths.py_ for explanations of the different result files
 * Statistical data, specifically mat files containing the p-values of the correlation coefficients and mutual 
@@ -157,14 +157,14 @@ execution may take a few minutes on a standard pc (tested on 7th generation Inte
 to validate the procedure, here and in the next steps, you may run it with fewer iterations. Then repeat with
 ML_INPUT_PATH set to SAVE_PATH and adapt MODALITIES in _constants.py_ accordingly (see explanation within the file).
 Also remember to change output names to avoid overwriting previously computed performance. Finally, combine the two 
-output files created using the function _combine_chunks_ from _src/statistics/combine_res.py_ followed by 
+output files created using the function _combine_chunks_ from _statistics_analysis/combine_res.py_ followed by 
 _get_feature_imp_, _get_events_imp_ and _get_family_imp_. 
 3) To get chance level results, run Module 3 with NUM_ITER=1000, SHUFFLE=1, and ML_INPUT_PATH set to SAVE_PATH_RICH. It
 is highly recommended to use CHUNKS_MAP (see _constants.py_) to shorten run times. With a standard PC this process may
 take several weeks, mainly due to SHAP analysis when by chance deep trees are trained, hence it is possible to 
 change/forgo the grid search procedure though results may vary. The procedure can also be accelerated by using 
 multiprocessing, which allowed us to perform the analysis in less than a week. You should then run _get_feature_imp_ from 
-_src/statistics/combine_res.py_.
+_statistics_analysis/combine_res.py_.
 4) Lastly, execute Module 3 with the REGION_BASED flag set to True to train the models on a single region. Change 
 NUM_ITER back to 50 and repeat the process twice with TRAIN_CA1 set to both True and False. You should then run 
-_get_feature_imp_ from _src/statistics/combine_res.py_.
+_get_feature_imp_ from _statistics_analysis/combine_res.py_.

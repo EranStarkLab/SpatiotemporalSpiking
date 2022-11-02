@@ -1,33 +1,32 @@
-# MAIN_PATH = 'path/to/main/directory/'
-MAIN_PATH = 'F:/Users/Lior/Desktop/University/Masters Degree/Stark Lab/SpatiotemporalSpiking/'
+MAIN_PATH = 'path/to/data/directory/'
 
 #######################################################################################################################
 # Paths For inputs and outputs of Modules 1-3
 # Paths to raw data used for feature extraction
-DATA_PATH = MAIN_PATH + 'data_files/raw_data/'
-DATA_MAT_PATH = MAIN_PATH + 'data_files/tags.mat'
+DATA_PATH = MAIN_PATH + 'raw_data/'
+DATA_MAT_PATH = MAIN_PATH + 'tags.mat'
 
 # Paths to Outputs of Module 1
-DATA_TEMP_PATH = MAIN_PATH + 'data_files/temp_state/'
-TEMP_PATH_FULL = MAIN_PATH + 'data_files/temp_state_full/'
+DATA_TEMP_PATH = MAIN_PATH + 'temp_state/'
+TEMP_PATH_FULL = MAIN_PATH + 'temp_state_full/'
 
 # Paths to outputs of Module 2
-SAVE_PATH = MAIN_PATH + 'data_files/postprocess_data/clusters_data/'
-SAVE_PATH_RICH = MAIN_PATH + 'data_files/postprocess_data/clusters_data_rich/'  # notice that this data is not provided
-SAVE_PATH_WF_TRANS = MAIN_PATH + 'data_files/postprocess_data/clusters_data_wf_trans/'
+SAVE_PATH = MAIN_PATH + 'postprocess_data/clusters_data/'
+SAVE_PATH_RICH = MAIN_PATH + 'postprocess_data/clusters_data_rich/'  # notice that this data is not provided
+SAVE_PATH_WF_TRANS = MAIN_PATH + 'postprocess_data/clusters_data_wf_trans/'
 
 # Paths to inputs of Module 3. This should be one of the outputs of module 2
-ML_INPUT_PATH = SAVE_PATH
+ML_INPUT_PATH = SAVE_PATH_RICH
 
 # Paths to outputs of Module 3
-DATASET_PATH = MAIN_PATH + 'data_files/datasets/'
-RESULTS_PATH = MAIN_PATH + 'data_files/results/'
+DATASET_PATH = MAIN_PATH + 'datasets/'
+RESULTS_PATH = MAIN_PATH + 'results/'
 
 # Paths to inputs for Modules 4 and 5
-STATS_PATH = MAIN_PATH + 'data_files/statistics/'
+STATS_PATH = MAIN_PATH + 'statistics/'
 
 # Paths to outputs of Module 5
-FIG_PATH = MAIN_PATH + 'data_files/figures/'
+FIG_PATH = MAIN_PATH + 'figures/'
 
 #######################################################################################################################
 # Paths to results and analysis files

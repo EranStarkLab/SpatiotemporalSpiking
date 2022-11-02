@@ -8,7 +8,7 @@ from constants import INF
 
 def run(n_estimators, max_depth, min_samples_split, min_samples_leaf, dataset_path, seed, shuffle_labels=False):
     """
-    runner function for the RF model.
+    runner function for the RF model. see gs_rf.py for explanations about the inputs.
    """
 
     train, test2, test1, _, _, _ = ML_util.get_dataset(dataset_path)

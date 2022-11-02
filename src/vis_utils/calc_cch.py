@@ -6,6 +6,18 @@ CCH_WINDOW = 30
 MS_CONSTANT = 1_000
 
 def calc_hist(spike_train, stims, bins):
+    """
+
+    Parameters
+    ----------
+    spike_train : List of spike times
+    stims : List of triggers
+    bins : Bin edges to use for the histogram
+
+    Returns
+    -------
+    Cross correlation histogram
+    """
     ret = np.zeros(len(bins) - 1)
     for stim in stims:
         ref_time_list = spike_train - stim

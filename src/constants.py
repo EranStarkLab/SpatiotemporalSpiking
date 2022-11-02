@@ -5,6 +5,7 @@ import numpy as np
 # A dictionary determining which sessions will be read and which shanks will be skipped
 SESSION_EMPTY_INDS = {'es25nov11_13': [1, 2, 4]}
 
+# The following was used for the entire dataset (not provided)
 """SESSION_EMPTY_INDS = {
     'es04feb12_1': [],
     'es09feb12_2': [1], 'es09feb12_3': [1],
@@ -20,7 +21,7 @@ SESSION_EMPTY_INDS = {'es25nov11_13': [1, 2, 4]}
     'm649r1_21': [1], 'm649r1_22': [1]
 }"""
 
-# Change of the following parameters may lead to unexpected beahvior.
+# Change of the following parameters may lead to unexpected behavior.
 # number of channels per shank
 NUM_CHANNELS = 8
 

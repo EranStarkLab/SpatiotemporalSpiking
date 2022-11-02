@@ -9,6 +9,16 @@ from constants import INF, SAMPLE_N
 import ml.ML_util as ML_util
 
 def get_inds_unsq(cum_c, inds):
+    """
+
+    ----------
+    cum_c : cumulative number of samples per unit
+    inds : set indices
+
+    Returns
+    -------
+    Indices in the flat version of the data
+    """
     pairs = []
     for i in inds:
         if i == 0:
@@ -21,6 +31,18 @@ def get_inds_unsq(cum_c, inds):
     return new_inds
 
 def cv_gen(unsqueezed, n, seed):
+    """
+
+    Parameters
+    ----------
+    unsqueezed : np.ndarray; unsqueezed full data
+    n : number of folds
+    seed : seed for randomization
+
+    Returns
+    -------
+    List of Indices for random stratified partition
+    """
     ret = []
     sham_data = np.asarray([elem[0] for elem in unsqueezed])
     sham_features, labels = ML_util.split_features(sham_data)
@@ -58,7 +80,7 @@ def grid_search(dataset_path, n_estimators_min, n_estimators_max, n_estimators_n
 
     Returns
     -------
-    
+    A trained classifier and best hyperparameters
     """
     train, _, test1, _, _, _ = ML_util.get_dataset(dataset_path)
 

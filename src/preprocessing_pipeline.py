@@ -285,4 +285,5 @@ if __name__ == "__main__":
 
     main(CHUNK_SIZES, SAVE_PATH, DATA_MAT_PATH, DATA_TEMP_PATH, TRANS_WF, SEED)
 
-    add_chunk_statistics()
+    if not TRANS_WF:
+        add_chunk_statistics()

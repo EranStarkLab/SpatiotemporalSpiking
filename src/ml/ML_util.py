@@ -9,16 +9,15 @@ from constants import SEED
 
 def split_features(data):
     """
-   The function simply separates the features and the labels of the clusters
+   The function separates the features and the labels of the clusters
    """
     return data[:, :-1], data[:, -1].astype('int32')
 
 
 def is_legal(cluster):
     """
-   This function determines whether or not a cluster's label is legal. It is assumed that all waveforms
+   This function determines whether or not a cluster's label is legal (PYR/PV). It is assumed that all waveforms
    of the cluster have the same label.
-   To learn more about the different labels please refer to the the read_data.py file
    """
     row = cluster[0]
     return row[-1] >= 0
@@ -26,11 +25,18 @@ def is_legal(cluster):
 
 def read_data(path, keep=None, filter_inp=None):
     """
-   The function reads the data from all files in the path.
-   It is assumed that each file represents a single cluster, and have some number of waveforms.
-   The should_filter (optional, bool, default = True) argument indicated whether we should filter out
-   clusters with problematic label (i.e. < 0)
-   """
+    The function reads the data from all files in the path.
+    It is assumed that each file represents a single cluster, and have some number of waveforms.
+    Parameters
+    ----------
+    path : String; path to raw data
+    keep : indices of features to use
+    filter_inp : optional; set of unit indices to use
+
+    Returns
+    -------
+
+    """
     if keep is None:
         keep = []
     files = os.listdir(path)
@@ -68,7 +74,7 @@ def read_data(path, keep=None, filter_inp=None):
 def break_data(data, cluster_names):
     """
    The function receives unordered data and returns a list with three numpy arrays: 1) with all the pyramidal clusters,
-   2) with all the interneuron clusters and 3) with all the unlabeled clusters
+   2) with all the PV clusters and 3) with all the unlabeled clusters
    """
     pyr_inds = get_inds(data, 1)
     in_inds = get_inds(data, 0)
@@ -80,7 +86,7 @@ def break_data(data, cluster_names):
 
 def was_created(paths, per_train, per_test2, per_test1):
     """
-   The function checks if all datasets were already creted and return True iff so
+   The function checks if all datasets were already created and return True iff so
    """
     for path in paths:
         path = path + str(per_train) + str(per_test2) + str(per_test1)
@@ -92,8 +98,25 @@ def was_created(paths, per_train, per_test2, per_test1):
 def create_datasets(per_train, per_test2, per_test1, raw_path, chunks, save_path, keep,
                     verbos=False, seed=None, region_based=False, train_ca1=True):
     """
-   The function creates all datasets from the data referenced by the datasets file and saves them
-   """
+
+    Parameters
+    ----------
+    per_train : Fraction of samples in train set
+    per_test2 : Fraction of samples in test set 2 (not relevant if region_based is True)
+    per_test1 : Fraction of samples in test set 1
+    raw_path : String; path to post-processed data
+    chunks : chunk sizes
+    save_path : String; path where datasets should be saved
+    keep : indices of features to keep
+    verbos : Bool; indicating if should print extra information
+    seed : seed for random partitioning
+    region_based : Bool; indicating if should perform region-based partitioning (see paper)
+    train_ca1 : Bool; relevant only if region_based is True, then determines the training region
+
+    Returns
+    -------
+    None. Datasets are saved
+    """
     if keep is None:
         keep = []
 
@@ -162,8 +185,8 @@ def get_dataset(path, verbose=False):
 
 def take_partial_data(data, start, end):
     """
-   The function recieves data which is a list with three numpy arrays: 1) clusters with pyramidal label, 2) clusters
-   with interneuron label and 3) unlabeled clusters. It returns a numpy array of clusters consisting of all parts of the
+   The function receives data which is a list with three numpy arrays: 1) clusters with pyramidal label, 2) clusters
+   with PV label and 3) unlabeled clusters. It returns a numpy array of clusters consisting of all parts of the
    data made from the start to end percentiles of the original elements of the data.
    """
     len0 = len(data[0])
@@ -194,13 +217,27 @@ def split_region_data(data, names, seed, test_per):
 def split_data(data, names, per_train=0.6, per_test2=0.2, per_test1=0.2, path='../data_sets', should_load=True,
                data_name='', verbos=False, seed=None, region_based=False, regions=None, train_ca1=True):
     """
-   This function recieves the data as an ndarray. The first level is the different clusters, i.e each file,
-   the second level is the different waveforms whithin each clusters and the third is the actual features
-   (with the label).
-   The function splits the entire data randomly to train, dev and test sets according to the given precentage.
-   It is worth mentioning that although the number of clusters in each set should be according to the function's
-   arguments the number of waveforms in each set is actually distributed independently.
-   """
+    The function splits the data to non-overlapping sets
+    Parameters
+    ----------
+    data : Feature information
+    names : Names of recording sessions associated with the samples
+    per_train : Fraction of samples in train set
+    per_test2 : Fraction of samples in test set 2 (not relevant if region_based is True)
+    per_test1 : Fraction of samples in test set 1
+    path : String; path where datasets should be saved
+    should_load : Bool; load instead of split if possible
+    data_name : STRING; identifier of the dataset for saving
+    verbos : Bool; indicating if should print extra information
+    seed : seed for random partitioning
+    region_based : Bool; indicating if should perform region-based partitioning (see paper)
+    regions : Regions of units recorded associated with the samples
+    train_ca1 : Bool; relevant only if region_based is True, then determines the training region
+
+    Returns
+    -------
+    The three sets created are saved and returned
+    """
     assert per_train + per_test2 + per_test1 == 1
     name = data_name + str(per_train) + str(per_test2) + str(per_test1) + '/'
     full_path = path + '/' + name if path is not None else None
@@ -253,7 +290,6 @@ def split_data(data, names, per_train=0.6, per_test2=0.2, per_test1=0.2, path='.
 def print_data_stats(data, name, total_clusters, total_waveforms):
     """
    This function prints various statistics about the given set
-   pyr == pyramidal ; in == interneuron; ut == untagged ; wfs == waveforms ; clstr == cluster
    """
     if len(data) == 0:
         print('No examples in %s set' % name)
