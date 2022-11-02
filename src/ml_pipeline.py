@@ -424,7 +424,7 @@ def main():
         np.save(results_path + f'raw_imps_rf_{RUN_NAME}_temp', raw_imps)
 
         if REGION_BASED:
-            preds = pred2 if preds2 is None else np.vstack((preds2, pred2))
+            preds2 = pred2 if preds2 is None else np.vstack((preds2, pred2))
             raw_imps = raw_imp2 if raw_imps2 is None else np.vstack((raw_imps2, raw_imp2))
             np.save(results_path + f'preds2_rf_{RUN_NAME}_temp', preds2)
             np.save(results_path + f'raw_imps2_rf_{RUN_NAME}_temp', raw_imps2)
