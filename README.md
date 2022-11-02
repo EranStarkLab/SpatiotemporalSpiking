@@ -1,26 +1,26 @@
 # SpatiotemporalSpiking
-This repository contains the code used in Sukman and Stark, 2022, eNeuro.
+This repository contains the code used in Sukman and Stark, 2022, Cortical pyramidal and parvalbumin cells exhibit 
+distinct spatiotemporal extracellular electric potentials.
 
 ## Requirements
-The code was tested on machines running Windows and Linux machines running Windows 10 and Ubuntu 18 respectively but is
-expected to work on any OS.
+The code was tested on machines running Windows (Windows 10) and Linux (Ubuntu 18), but is expected to work on any OS
 
 The code was tested with Python 3.9.1 and the packages described in the _requirements.txt_ file. Other versions of
 Python and/or the packages are not guaranteed to work or yield similar results. 
 
-Some statistical tests were conducted using MATLAB R2021B. In addition, to calculate mutual information values, it is 
-required to install the package developed in Timme and Lapish, 2018 (eNeuro).
+Some statistical tests were conducted using MATLAB R2021B. In addition, to calculate mutual information values 
+(Module 4), it is required to install the package developed in Timme and Lapish, 2018 (eNeuro).
 
 ## Modules
 The code should be executed from the _src_ directory and the input to all code segments should be provided by changing
 only the _constants.py_ and _paths.py_ files.
 
-The code files, all found under the _src/_ directory, can be grouped into __5__ modules:
+The code files, all found under the _src/_ directory, are grouped into __5__ modules:
 ### 1. Raw data parsing
 The module is executed by running _read_data.py_.  
 The module is used to read the raw data, and extract only the relevant spikes and assign labels to them (see _Spike 
 sorting and ground truth labels_ under _Materials and Methods_). Utility functions for this module are under _data_utils_.
-For this module, be sure to update the following (more customizability available, see _constants.py_):
+For this module, be sure to update the following (for additional customization, see _constants.py_):
 
 * _constants.py_:
   * SESSION_EMPTY_INDS - A dictionary containing all session names wanted to be read as keys, coupled with a list of 
@@ -46,7 +46,7 @@ The module is executed by running _preprocessing_pipeline.py_.
 The module is used to extract features from the outputs of __Module 1__ (See __Tables 1-3__ for the description of the 
 features, and subsection _chunking_ of the _Materials and Methods_ for the chunk statistics extracted from the original
 features). Utility functions for this module are under _data_utils_ and _features_. For this module, be sure to update
-the following (inputs for previous modules should not be changed; more customizability available, see _constants.py_):
+the following (inputs for previous modules should not be changed; for additional customization, see _constants.py_):
 
 * _constants.py_:
   * SEED - The Seed used for randomized chunk partition.
@@ -68,8 +68,8 @@ NPY file with the raw SHAP value for each sample for all trained models; NPY fil
 non-trained-upon-region test set if region-based partition was performed; NPY file with the raw SHAP value for each
 sample for all trained models on the non-trained-upon-region test set if region-based partition was performed set for
 all trained models. Utility functions for this module are under
-_ml_utils_. For this module, be sure to update the following (inputs for previous modules should not be changed; more
-customizability available, see _constants.py_):
+_ml_. For this module, be sure to update the following (inputs for previous modules should not be changed; for 
+additional customization, see _constants.py_):
 
 * _constants.py_:
   * MODALITIES - Names of modalities coupled with feature indices.
@@ -94,9 +94,9 @@ are performed in the notebooks. Some statistics are performed in the next module
 __Figure 3C__, __Figure 4__, and __Table 4__). In addition, some statistical tests are performed in MATLAB (specifically 
 Kruskal-Wallis tests, correlation significance and mutual information calculation). Note that some results files used
 for the analysis were modified to have the importance values of the original features, feature families and spatial
-event groups. Code for the manipulation is provided and explained in _statistics_analysis/combine_res.py_ . Utility functions
-for this module are under _statistics_. For this module, be sure to update the following (inputs for previous modules
-should not be changed):
+event groups. Code for the manipulation is provided and explained in _statistics_analysis/combine_res.py_ . Utility 
+functions for this module are under _statistics_. For this module, be sure to update the following (inputs for previous
+modules should not be changed):
 
 * _paths.py_:
   * MAIN_RES - Results of the regular execution and feature importance for the original features 
@@ -117,7 +117,7 @@ should not be changed):
 
 ### 5. Visualization
 The module is executed by running _vis_figures.py_.  
-The module is used to create the panels from the figures in the paper and specific statistical analysis (see above).
+The module is used to create the panels from the figures in the manuscript and specific statistical analysis (see above).
 Utility functions for this module are under _vis_utils_. Note that some visual aspects of the outputs were added/fixed 
 manually. For this module, be sure to update the following (inputs for previous modules should not be changed):
 
@@ -130,8 +130,8 @@ manually. For this module, be sure to update the following (inputs for previous 
   * MI_MAT - mat file containing mutual information values between the features and p-values.
 
 ## Provided data
-Partial data is provided to be able to test the modules.
-* Raw data is provided for a single shank from a single recording session under _data_files/raw_data/es25nov11_13/_. 
+A dataset is provided at https://doi.org/10.5281/zenodo.7273925 for testing the modules.
+* Raw data are provided for a single shank from a single recording session under _data_files/raw_data/es25nov11_13/_. 
 Files with .spk, .res, and .clu formats are constructed as described in Hazan et al., 2006. .xml file contains metadata
 for the recording session. .stm file contains information about the light stimuli (start and end times, type of stimuli,
 intensity of stimuli, and shank).
@@ -139,18 +139,18 @@ intensity of stimuli, and shank).
 unit from every shank (shankclu) and recording session (filename) about the functionality (excitatory-exc;
 inhibitory-inh), responsiveness to light (act) and region (region; 0 corresponds to neocortex and >=1 corresponds to
 CA1).
-* As the provided data accounts only for a small fraction of the dataset used in the paper, the post-processed data,
-after feature extraction is also provided under _data_files/postprocess_data/_. The directory includes two 
-sub-directories: _cluster_data/_ containing the features of all three modalities and _cluster_data_wf_trans/_ which
-contains only waveform-based features extracted from the transformed spikes. Note that _cluster_data/_ does not contain
-chunk statistics. To extract chunk statistics you may utilize _preprocessing_pipeline.py_.
+* As the raw data provided for testing the first module are a subset of the full dataset used in the manuscript, all 
+post-processed data (after feature extraction) are also provided under _data_files/postprocess_data/_. The directory
+includes two sub-directories: _cluster_data/_ containing the features of all three modalities and 
+_cluster_data_wf_trans/_ which contains only waveform-based features extracted from the transformed spikes. Note that
+_cluster_data/_ does not contain chunk statistics. To extract chunk statistics you may utilize _preprocessing_pipeline.py_.
 * Since execution times can be prolonged (see _Replicating results_ below), results files are provided under 
 _data_files/results/_ and can be used for Modules 4 and 5. See _paths.py_ for explanations of the different result files
 * Statistical data, specifically mat files containing the p-values of the correlation coefficients and mutual 
 information values are available under _data_files/statistics/_.
 
 ## Replicating results
-1) To add chunk statistics to the data run _preprocessing_pipeline.py_. Be sure to run Module 1 before or 
+1) To add chunk statistics to the data, run _preprocessing_pipeline.py_. Be sure to run Module 1 before or 
 alternatively manually execute only the function _add_chunk_statistics_. Due to having to load and modify large files,
 execution may take a few minutes on a standard pc (tested on 7th generation Intel i7 processor and 16 GB of RAM).
 2) Run Module 3 with NUM_ITER=50, and ML_INPUT_PATH set to SAVE_PATH_RICH. This may take around a day on a standard PC, 
@@ -162,9 +162,9 @@ _get_feature_imp_, _get_events_imp_ and _get_family_imp_.
 3) To get chance level results, run Module 3 with NUM_ITER=1000, SHUFFLE=1, and ML_INPUT_PATH set to SAVE_PATH_RICH. It
 is highly recommended to use CHUNKS_MAP (see _constants.py_) to shorten run times. With a standard PC this process may
 take several weeks, mainly due to SHAP analysis when by chance deep trees are trained, hence it is possible to 
-change/forgo the grid search procedure though results may vary. The procedure can also be accelerated by using 
-multiprocessing, which allowed us to perform the analysis in less than a week. You should then run _get_feature_imp_ from 
+change/forgo the grid search procedure though results may vary. The process can be accelerated using parallel 
+processing, which allowed us to perform the analysis in less than a week. You should then run _get_feature_imp_ from 
 _statistics_analysis/combine_res.py_.
-4) Lastly, execute Module 3 with the REGION_BASED flag set to True to train the models on a single region. Change 
+4) Last, execute Module 3 with the REGION_BASED flag set to True to train the models on a single region. Change 
 NUM_ITER back to 50 and repeat the process twice with TRAIN_CA1 set to both True and False. You should then run 
 _get_feature_imp_ from _statistics_analysis/combine_res.py_.

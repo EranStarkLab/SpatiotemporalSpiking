@@ -1,1 +1,1 @@
-SRC_PATH = 'path/to/src/directory/'
+SRC_PATH = '../'

@@ -1,4 +1,5 @@
-fets = load('F:\Users\Lior\Desktop\University\Masters Degree\Stark Lab\Code\Stark Lab Project\statistics\feature_mat.mat');
+% Make sure to update and run paths.m first
+fets = load(features_path);
 
 fn = fieldnames(fets);
 mis = zeros(numel(fn), numel(fn));
@@ -32,4 +33,4 @@ for i=1:numel(fn)
         pvals(i, j) = pval;
     end
 end
-save('F:\Users\Lior\Desktop\University\Masters Degree\Stark Lab\Code\Stark Lab Project\statistics\MIs.mat','pvals','mis')
+save(mi_save_path,'pvals','mis')
