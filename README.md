@@ -3,7 +3,7 @@ This repository contains the code used in Sukman and Stark, 2022, Cortical pyram
 distinct spatiotemporal extracellular electric potentials.
 
 ## Requirements
-The code was tested on machines running Windows (Windows 10) and Linux (Ubuntu 18), but is expected to work on any OS
+The code was tested on machines running Windows (Windows 10) and Linux (Ubuntu 18), but is expected to work on any OS.
 
 The code was tested with Python 3.9.1 and the packages described in the _requirements.txt_ file. Other versions of
 Python and/or the packages are not guaranteed to work or yield similar results. 
@@ -94,7 +94,8 @@ are performed in the notebooks. Some statistics are performed in the next module
 __Figure 3C__, __Figure 4__, and __Table 4__). In addition, some statistical tests are performed in MATLAB (specifically 
 Kruskal-Wallis tests, correlation significance and mutual information calculation). Note that some results files used
 for the analysis were modified to have the importance values of the original features, feature families and spatial
-event groups. Code for the manipulation is provided and explained in _statistics_analysis/combine_res.py_ . Utility 
+event groups. Code for the manipulation is provided and explained in _statistics_analysis/combine_res.py_. In addition,
+p-values based on permutation tests may vary across executions due to the random nature of the sampling. Utility 
 functions for this module are under _statistics_. For this module, be sure to update the following (inputs for previous
 modules should not be changed):
 
